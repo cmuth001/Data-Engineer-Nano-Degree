@@ -22,3 +22,8 @@ This database will help the internal departments of the Sparkify company to do d
 * Favorite songs of user based on the week day: By joining songplay and songs and user table based on level. 
 * Recent listened to songs: By joining songplays and user table can show recommendation on the app based on subscription level. 
 * Can help in recommending most popular songs of the day/week.
+
+## ETL
+1. Created **songs**, **artist** dimension tables from extracting songs_data by selected columns.
+2. Created **users**, **time** dimension tables from extracting log_data by selected columns.
+3. Created the most important table fact table from the dimensison tables and log_data called **songplays**. 
