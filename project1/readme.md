@@ -67,3 +67,17 @@ pip install psycopg2
     **process_log_file**: read one by one log file and insert details with selected columns into user, time and songplays tables.
    
     **process_data**: collect all the file paths and call the above two function and show status of files processed.
+
+    **main**: used to call the process_data function.
+
+5. **test.py**: displays the first few rows of each table to let you check your database.
+
+## execute files in the below order each time before pipeline.
+
+   1. create_tables.py
+      ```python
+         $ python3 create_tables.py
+   2. etl.ipynb/et.py
+      ```python
+         $ python3 etl.py
+   3. test.ipynb
