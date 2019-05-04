@@ -16,3 +16,9 @@ And much more complex business logics can be easily solved using the STAR schema
 Created a STAT schema, optimized for song play analysis.
 * **Fact Table**: songplays 
 * **Dimension Tables**: users, songs, artists, time 
+
+This database will help the internal departments of the Sparkify company to do different kinds of analysis to recommend a Sparkify user. 
+
+* Favorite songs of user based on the week day: By joining songplay and songs and user table based on level. 
+* Recent listened to songs: By joining songplays and user table can show recommendation on the app based on subscription level. 
+* Can help in recommending most popular songs of the day/week.
