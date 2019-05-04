@@ -14,8 +14,8 @@ And much more complex business logics can be easily solved using the STAR schema
 
 
 Created a STAT schema, optimized for song play analysis.
-* **Fact Table**: songplays 
-* **Dimension Tables**: users, songs, artists, time 
+* **Fact Table**: songplays: attributes referencing to the dimension tables.
+* **Dimension Tables**: users, songs, artists and time table. 
 
 This database will help the internal departments of the Sparkify company to do different kinds of analysis to recommend a Sparkify user. 
 
@@ -27,3 +27,43 @@ This database will help the internal departments of the Sparkify company to do d
 1. Created **songs**, **artist** dimension tables from extracting songs_data by selected columns.
 2. Created **users**, **time** dimension tables from extracting log_data by selected columns.
 3. Created the most important table fact table from the dimensison tables and log_data called **songplays**. 
+
+## Installation
+
+Install PostgreSQL database drivers by using the below command
+```bash
+pip install psycopg2
+```
+## Usage
+1. **sql_queries.py**: contains all SQL queries of the project and this file can be used in multiple files.
+2. **create_tables.py**: run this file after writing for creating tables for the project.
+
+      #### Libraries used:
+     ```python
+     import psycopg2
+     from sql_queries import create_table_queries, drop_table_queries
+     ```
+     #### Functions and its importance:
+     **create_database**: This function helps in droping exixting database, create new database and return the connection.
+
+    **drop_tables**: Used to drop the exixting tables.
+
+    **create_tables**: This helps in creating above mentioned fact table and dimension tables.
+3. **etl.ipynb**: reads and processes a single file from song_data and log_data and loads the data into your tables. This notebook contains detailed instructions on the ETL process for each of the tables.
+4. **etl.py**:   read  and process files from song_data and log_data and load them to tables. 
+    #### Libraries used:
+    ```python
+    import os
+    import glob
+    import psycopg2
+    import pandas as pd
+    from sql_queries import *
+    import json
+     ```
+    #### Functions and its importance:
+   
+    **process_song_file**: This function is used to read the song file and insert details with selected columns into song and artist dimension table.
+
+    **process_log_file**: read one by one log file and insert details with selected columns into user, time and songplays tables.
+   
+    **process_data**: collect all the file paths and call the above two function and show status of files processed.
