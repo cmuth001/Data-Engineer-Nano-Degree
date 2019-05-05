@@ -6,6 +6,11 @@ from sql_queries import *
 import datetime
 
 def process_song_file(cur, filepath):
+    '''
+    cur: connection cursor
+    filepath: Single song file path, extract details and insert into song and artist table. 
+    '''
+    
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -27,6 +32,11 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    '''
+    cur: connection cursor
+    filepath: Single log file path, extract details and insert into user, time and songplays table. 
+    '''
+    
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -39,10 +49,11 @@ def process_log_file(cur, filepath):
     df['week'] = t.apply(lambda x: datetime.date(x.year, x.month, x.day).isocalendar()[1])
     df['week_day'] = t.apply(lambda x: datetime.date(x.year, x.month, x.day).strftime("%A"))
     # insert time data records
-    time_data = (df.ts, t.dt.hour, t.dt.day, df.week, t.dt.month, t.dt.year, df.week_day)
+    time_data = (t, t.dt.hour, t.dt.day, df.week, t.dt.month, t.dt.year, df.week_day)
     column_labels = ['start_time','hour','day','week','month', 'year','weekday']
     time_df = pd.DataFrame(dict(zip(column_labels, time_data)))
     df['start_time'] = t
+    df.head()
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
 
@@ -53,10 +64,8 @@ def process_log_file(cur, filepath):
     for i, row in user_df.iterrows():
         cur.execute(user_table_insert, row)
         
-#     print("----User data inserted----")
     # insert songplay records
     for index, row in df.iterrows():
-#         print(row.song, row.artist, row.length)
         # get songid and artistid from song and artist tables
         cur.execute(song_select, (row.song, row.artist, row.length))
         results = cur.fetchone()
@@ -67,11 +76,18 @@ def process_log_file(cur, filepath):
             songid, artistid = None, None
 
         # insert songplay record
-        songplay_data = (str(row.start_time),row.userId,row.level,songid,artistid, row.sessionId,row.location,row.userAgent)
+        songplay_data = (row.start_time,row.userId,row.level,songid,artistid, row.sessionId,row.location,row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 
 def process_data(cur, conn, filepath, func):
+    '''
+    cur: cursor connection
+    conn: database connection
+    filepath: dataset path to extract all the sub paths
+    func: function to call and process the data
+    '''
+    
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -91,12 +107,13 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
-    conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
-    cur = conn.cursor()
+    conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student") #connect to the sparkify database
+    cur = conn.cursor() 
 
     process_data(cur, conn, filepath='data/song_data', func=process_song_file)
     process_data(cur, conn, filepath='data/log_data', func=process_log_file)
 
+    #connection closed
     conn.close()
 
 

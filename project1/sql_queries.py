@@ -24,7 +24,7 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS users(
                         user_id int NOT NULL,
                         first_name varchar NOT NULL,
                         last_name varchar NOT NULL,
-                        gender varchar,
+                        gender char,
                         level varchar,
                         PRIMARY KEY (user_id))""")
 
@@ -33,7 +33,7 @@ song_table_create = ("""CREATE TABLE IF NOT EXISTS songs(
                         title varchar,
                         artist_id varchar,
                         year int,
-                        duration numeric,
+                        duration float,
                         PRIMARY KEY (song_id))""")
 
 artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists(
@@ -45,13 +45,14 @@ artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists(
                         PRIMARY KEY (artist_id))""")
 
 time_table_create = ("""CREATE TABLE IF NOT EXISTS time(
-                        start_time numeric,
+                        start_time timestamp NOT NULL,
                         hour int,
                         day int,
                         week int,
                         month int,
                         year int,
-                        weekday varchar)""")
+                        weekday varchar,
+                        PRIMARY KEY (start_time))""")
 
 # INSERT RECORDS
 
@@ -61,7 +62,7 @@ songplay_table_insert = ("""INSERT INTO songplays( start_time, user_id,level,art
 user_table_insert = ("""INSERT INTO users(user_id, first_name, last_name, gender,level)
                         VALUES(%s, %s, %s, %s, %s)
                         ON CONFLICT (user_id) 
-                        DO NOTHING""")
+                        DO UPDATE SET level = excluded.level""")
 
 song_table_insert = ("""INSERT INTO songs(song_id, title, artist_id,year,duration)
                         VALUES(%s, %s, %s, %s, %s)
@@ -75,7 +76,9 @@ artist_table_insert = ("""INSERT INTO  artists(artist_id, name,location,lattitud
 
 
 time_table_insert = ("""INSERT INTO time(start_time,hour,day,week,month, year,weekday)
-                        VALUES(%s, %s, %s, %s, %s, %s, %s)""")
+                        VALUES(%s, %s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (start_time) 
+                        DO NOTHING""")
 
 # FIND SONGS
 
