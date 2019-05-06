@@ -13,7 +13,7 @@ The STAR schema consists of one fact table referencing any number of dimension t
 And much more complex business logics can be easily solved using the STAR schema method.
 
 
-Created a STAT schema, optimized for song play analysis.
+Created a STAR schema, optimized for song play analysis.
 * **Fact Table**: songplays: attributes referencing to the dimension tables.
 * **Dimension Tables**: users, songs, artists and time table. 
 
@@ -44,9 +44,9 @@ pip install psycopg2
      from sql_queries import create_table_queries, drop_table_queries
      ```
      #### Functions and its importance:
-     **create_database**: This function helps in droping exixting database, create new database and return the connection.
+     **create_database**: This function helps in droping existing database, create new database and return the connection.
 
-    **drop_tables**: Used to drop the exixting tables.
+    **drop_tables**: Used to drop the existing tables.
 
     **create_tables**: This helps in creating above mentioned fact table and dimension tables.
 3. **etl.ipynb**: reads and processes a single file from song_data and log_data and loads the data into your tables. This notebook contains detailed instructions on the ETL process for each of the tables.
