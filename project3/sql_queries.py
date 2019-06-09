@@ -53,19 +53,55 @@ staging_songs_table_create = ("""CREATE  TABLE IF NOT EXISTS staging_songs(
                             )
 """)
 
-songplay_table_create = ("""
+songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplay(
+                            songplayId IDENTITY(0,1),
+                            startTime TIMESTAMP,
+                            userId INTEGER,
+                            level VARCHAR(5),
+                            songId VARCHAR(MAX),
+                            artistId VARCHAR(MAX),
+                            sessionId INTEGER,
+                            location VARCHAR(MAX),
+                            userAgent VARCHAR(MAX)
+                        )
 """)
 
-user_table_create = ("""
+user_table_create = ("""CREATE TABLE IF NOT EXISTS user(
+                        userId INTEGER,
+                        firstName VARCHAR(MAX),
+                        lastName VARCHAR(MAX),
+                        gender CHAR(1),
+                        level VARCHAR(5)
+                    )
 """)
 
-song_table_create = ("""
+song_table_create = ("""CREATE TABLE IF EXISTS song(
+                        songId VARCHAR(MAX),
+                        title VARCHAR(MAX),
+                        artistId VARCHAR(MAX),
+                        year INTEGER,
+                        duration FLOAT4
+                    )
 """)
 
-artist_table_create = ("""
+artist_table_create = ("""CREATE TABLE IF EXISTS artist(
+                          artistId VARCHAR(MAX),
+                          name VARCHAR(MAX),
+                          location VARCHAR(MAX),
+                          latitude FLOAT8,
+                          longitude FLOAT8
+                       )
 """)
 
-time_table_create = ("""
+time_table_create = ("""CREATE TABLE IF EXISTS time(
+                        startTime TIMESTAMP,
+                        hour INTEGER,
+                        day INTEGER,
+                        week INTEGER,
+                        month INTEGER,
+                        year INTEGER,
+                        weekDay INTEGER
+                    )
 """)
 
 # STAGING TABLES
