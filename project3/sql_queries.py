@@ -38,13 +38,13 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events(
                                 status INTEGER,
                                 ts BIGINT,
                                 user_agent TEXT,
-                                userId INTEGER
+                                user_id INTEGER
                             )
 """)
 
 staging_songs_table_create = ("""CREATE  TABLE IF NOT EXISTS staging_songs(
                                 num_songs INTEGER,
-                                artist_id TEXT),
+                                artist_id TEXT,
                                 artist_latitude NUMERIC,
                                 artist_longitude NUMERIC,
                                 artist_location TEXT,
@@ -74,14 +74,14 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS users(
                         first_name TEXT,
                         last_name TEXT,
                         gender CHAR(1),
-                        level TEXT)
+                        level TEXT
                     )
 """)
 
 song_table_create = ("""CREATE TABLE IF NOT EXISTS song(
                         song_id TEXT,
                         title TEXT,
-                        artist_id TEXT),
+                        artist_id TEXT,
                         year INTEGER,
                         duration NUMERIC
                     )
@@ -111,32 +111,50 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time(
 staging_events_copy = ("""copy staging_events 
                           from {}
                           iam_role {}
-                          region 'us-west-2'
-                          JSON {};
+                          json {};
                        """).format(LOG_DATA, IAM_ROLE, LOG_JSONPATH)
 
 staging_songs_copy = ("""copy staging_songs 
                           from {} 
                           iam_role {}
-                          region 'us-west-2'
-                          JSON auto;
+                          json 'auto';
                       """).format(SONG_DATA, IAM_ROLE)
 
 # FINAL TABLES
 
-songplay_table_insert = ("""
+songplay_table_insert = ("""INSERT INTO songplay(start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+                            SELECT  timestamp 'epoch' + se.ts/1000 * interval '1 second' as start_time, se.user_id, se.level, 
+                                    ss.song_id, ss.artist_id, se.session_id, se.location, se.user_agent
+                            FROM staging_events se, staging_songs ss
+                            WHERE se.page = 'NextSong' AND
+                            se.song =ss.title AND
+                            se.artist = ss.artist_name AND
+                            se.length = ss.duration
 """)
 
-user_table_insert = ("""
+user_table_insert = ("""INSERT INTO users(user_id, first_name, last_name, gender, level)
+                        SELECT distinct  user_id, first_name, last_name, gender, level
+                        FROM staging_events
+                        WHERE page = 'NextSong'
 """)
 
-song_table_insert = ("""
+song_table_insert = ("""INSERT INTO song(song_id, title, artist_id, year, duration)
+                        SELECT song_id, title, artist_id, year, duration
+                        FROM staging_songs
+                        WHERE song_id IS NOT NULL
 """)
 
-artist_table_insert = ("""
+artist_table_insert = ("""INSERT INTO artist(artist_id, name, location, latitude, longitude)
+                          SELECT distinct artist_id, artist_name, artist_location , artist_latitude, artist_longitude 
+                          FROM staging_songs
+                          WHERE artist_id IS NOT NULL
 """)
 
-time_table_insert = ("""
+time_table_insert = ("""INSERT INTO time(start_time, hour, day, week, month, year, weekDay)
+                        SELECT start_time, extract(hour from start_time), extract(day from start_time),
+                                extract(week from start_time), extract(month from start_time),
+                                extract(year from start_time), extract(dayofweek from start_time)
+                        FROM songplay
 """)
 
 # QUERY LISTS
