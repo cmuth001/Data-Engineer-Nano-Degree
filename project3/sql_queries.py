@@ -4,7 +4,10 @@ import configparser
 # CONFIG
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
-
+IAM_ROLE = config['IAM_ROLE']['ARN']
+LOG_DATA = config['S3']['LOG_DATA']
+SONG_DATA = config['S3']['SONG_DATA']
+LOG_JSONPATH = config['S3']['LOG_JSONPATH']
 # DROP TABLES
 
 staging_events_table_drop = "DROP TABLE IF EXISTS staging_events_table"
@@ -54,7 +57,7 @@ staging_songs_table_create = ("""CREATE  TABLE IF NOT EXISTS staging_songs(
 """)
 
 songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplay(
-                            songplayId IDENTITY(0,1),
+                            songplayId INT IDENTITY(1,1),
                             startTime TIMESTAMP,
                             userId INTEGER,
                             level VARCHAR(5),
@@ -66,7 +69,7 @@ songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplay(
                         )
 """)
 
-user_table_create = ("""CREATE TABLE IF NOT EXISTS user(
+user_table_create = ("""CREATE TABLE IF NOT EXISTS users(
                         userId INTEGER,
                         firstName VARCHAR(MAX),
                         lastName VARCHAR(MAX),
@@ -75,7 +78,7 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS user(
                     )
 """)
 
-song_table_create = ("""CREATE TABLE IF EXISTS song(
+song_table_create = ("""CREATE TABLE IF NOT EXISTS song(
                         songId VARCHAR(MAX),
                         title VARCHAR(MAX),
                         artistId VARCHAR(MAX),
@@ -84,7 +87,7 @@ song_table_create = ("""CREATE TABLE IF EXISTS song(
                     )
 """)
 
-artist_table_create = ("""CREATE TABLE IF EXISTS artist(
+artist_table_create = ("""CREATE TABLE IF NOT EXISTS artist(
                           artistId VARCHAR(MAX),
                           name VARCHAR(MAX),
                           location VARCHAR(MAX),
@@ -93,7 +96,7 @@ artist_table_create = ("""CREATE TABLE IF EXISTS artist(
                        )
 """)
 
-time_table_create = ("""CREATE TABLE IF EXISTS time(
+time_table_create = ("""CREATE TABLE IF NOT EXISTS time(
                         startTime TIMESTAMP,
                         hour INTEGER,
                         day INTEGER,
@@ -105,12 +108,19 @@ time_table_create = ("""CREATE TABLE IF EXISTS time(
 """)
 
 # STAGING TABLES
+staging_events_copy = ("""copy staging_events 
+                          from '{}' 
+                          iam_role '{}'
+                          region 'us-west-2'
+                          JSON '{}';
+                       """).format(LOG_DATA, IAM_ROLE, LOG_JSONPATH)
 
-staging_events_copy = ("""
-""").format()
-
-staging_songs_copy = ("""
-""").format()
+staging_songs_copy = ("""copy staging_events 
+                          from '{}' 
+                          iam_role '{}'
+                          region 'us-west-2'
+                          JSON auto;
+                      """).format(SONG_DATA, IAM_ROLE)
 
 # FINAL TABLES
 
