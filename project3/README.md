@@ -24,6 +24,20 @@ This database will help the internal departments of the Sparkify company to do d
 * Recent listened to songs: By joining songplays and user table can show recommendation on the app based on subscription level.
 * Can help in recommending most popular songs of the day/week.
 
+## DWH configurations and SETUP
+
+### step-0
+  * Create a new IAM user in your AWS account.
+  * Give it AdministratorAccess and Attach policies
+  * Use access key and secret key to create clients for EC2, S3, IAM, and Redshift.
+
+### Step-1
+  * Create an IAM Role that makes Redshift able to access S3 bucket (ReadOnly)
+  
+### Step-2 
+  * [Create Cluster](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/redshift.html#Redshift.Client.create_cluster)
+  * Create a RedShift Cluster and get the DWH_ENDPOIN(Host address) and DWH_ROLE_ARN and fill the config file.
+  
 ## ETL Pipeline
 
 1. Created tables tables to store the data from S3 buckets. 
