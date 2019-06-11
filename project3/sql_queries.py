@@ -21,83 +21,83 @@ time_table_drop = "DROP TABLE IF EXISTS time_table"
 # CREATE TABLES
 
 staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events(
-                                artist VARCHAR(MAX),
-                                auth VARCHAR(25),
-                                firstName VARCHAR(MAX),
+                                artist TEXT,
+                                auth TEXT,
+                                first_name TEXT,
                                 gender CHAR(1),
-                                itemSession INTEGER,
-                                lastName VARCHAR(MAX),
-                                length FLOAT4,
-                                level VARCHAR(5),
-                                location VARCHAR(MAX),
-                                method VARCHAR(4),
-                                page VARCHAR(12),
-                                registration FLOAT8,
-                                sessionId INTEGER,
-                                song VARCHAR(MAX),
+                                item_session INTEGER,
+                                last_name TEXT,
+                                length NUMERIC,
+                                level TEXT,
+                                location TEXT,
+                                method TEXT,
+                                page TEXT,
+                                registration NUMERIC,
+                                session_id INTEGER,
+                                song TEXT,
                                 status INTEGER,
-                                ts VARCHAR(MAX),
-                                userAgent VARCHAR(MAX),
+                                ts BIGINT,
+                                user_agent TEXT,
                                 userId INTEGER
                             )
 """)
 
 staging_songs_table_create = ("""CREATE  TABLE IF NOT EXISTS staging_songs(
                                 num_songs INTEGER,
-                                artistId VARCHAR(MAX),
-                                artistLatitude FLOAT8,
-                                artistLongitude FLOAT8,
-                                artistLocation VARCHAR(MAX),
-                                artistName VARCHAR(MAX),
-                                songId VARCHAR(MAX),
-                                title VARCHAR(MAX),
-                                duration FLOAT4,
+                                artist_id TEXT),
+                                artist_latitude NUMERIC,
+                                artist_longitude NUMERIC,
+                                artist_location TEXT,
+                                artist_name TEXT,
+                                song_id TEXT,
+                                title TEXT,
+                                duration NUMERIC,
                                 year INTEGER
                             )
 """)
 
 songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplay(
-                            songplayId INT IDENTITY(1,1),
-                            startTime TIMESTAMP,
-                            userId INTEGER,
-                            level VARCHAR(5),
-                            songId VARCHAR(MAX),
-                            artistId VARCHAR(MAX),
-                            sessionId INTEGER,
-                            location VARCHAR(MAX),
-                            userAgent VARCHAR(MAX)
+                            songplay_id INT IDENTITY(1,1),
+                            start_time TIMESTAMP,
+                            user_id INTEGER,
+                            level TEXT,
+                            song_id TEXT,
+                            artist_id TEXT,
+                            session_id INTEGER,
+                            location TEXT,
+                            user_agent TEXT
                         )
 """)
 
 user_table_create = ("""CREATE TABLE IF NOT EXISTS users(
-                        userId INTEGER,
-                        firstName VARCHAR(MAX),
-                        lastName VARCHAR(MAX),
+                        user_id INTEGER,
+                        first_name TEXT,
+                        last_name TEXT,
                         gender CHAR(1),
-                        level VARCHAR(5)
+                        level TEXT)
                     )
 """)
 
 song_table_create = ("""CREATE TABLE IF NOT EXISTS song(
-                        songId VARCHAR(MAX),
-                        title VARCHAR(MAX),
-                        artistId VARCHAR(MAX),
+                        song_id TEXT,
+                        title TEXT,
+                        artist_id TEXT),
                         year INTEGER,
-                        duration FLOAT4
+                        duration NUMERIC
                     )
 """)
 
 artist_table_create = ("""CREATE TABLE IF NOT EXISTS artist(
-                          artistId VARCHAR(MAX),
-                          name VARCHAR(MAX),
-                          location VARCHAR(MAX),
-                          latitude FLOAT8,
-                          longitude FLOAT8
+                          artist_id TEXT,
+                          name TEXT,
+                          location TEXT,
+                          latitude NUMERIC,
+                          longitude NUMERIC
                        )
 """)
 
 time_table_create = ("""CREATE TABLE IF NOT EXISTS time(
-                        startTime TIMESTAMP,
+                        start_time TIMESTAMP,
                         hour INTEGER,
                         day INTEGER,
                         week INTEGER,
@@ -109,15 +109,15 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time(
 
 # STAGING TABLES
 staging_events_copy = ("""copy staging_events 
-                          from '{}' 
-                          iam_role '{}'
+                          from {}
+                          iam_role {}
                           region 'us-west-2'
-                          JSON '{}';
+                          JSON {};
                        """).format(LOG_DATA, IAM_ROLE, LOG_JSONPATH)
 
-staging_songs_copy = ("""copy staging_events 
-                          from '{}' 
-                          iam_role '{}'
+staging_songs_copy = ("""copy staging_songs 
+                          from {} 
+                          iam_role {}
                           region 'us-west-2'
                           JSON auto;
                       """).format(SONG_DATA, IAM_ROLE)
