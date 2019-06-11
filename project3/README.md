@@ -32,11 +32,11 @@ This database will help the internal departments of the Sparkify company to do d
   * Use access key and secret key to create clients for EC2, S3, IAM, and Redshift.
 
 ### Step-1
-  * [IAM Role](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam.html#client)
+  * See doc [IAM Role](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam.html#client)
   * Create an IAM Role that makes Redshift able to access S3 bucket (ReadOnly)
   
 ### Step-2 
-  * [Create Cluster](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/redshift.html#Redshift.Client.create_cluster)
+  * See doc [Create Cluster](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/redshift.html#Redshift.Client.create_cluster)
   * Create a RedShift Cluster and get the DWH_ENDPOIN(Host address) and DWH_ROLE_ARN and fill the config file.
   
 ## ETL Pipeline
