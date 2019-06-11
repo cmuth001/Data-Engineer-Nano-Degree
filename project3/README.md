@@ -47,7 +47,8 @@ This database will help the internal departments of the Sparkify company to do d
    ```python
   $ python3 create_tables.py
    ```
+
 2. etl.py 
    ```python
-  $ python3 etl.py
+   $ python3 etl.py
    ```
