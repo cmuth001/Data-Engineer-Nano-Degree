@@ -57,9 +57,9 @@ staging_songs_table_create = ("""CREATE  TABLE IF NOT EXISTS staging_songs(
 """)
 
 songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplay(
-                            songplay_id INT IDENTITY(1,1),
+                            songplay_id INT IDENTITY(1,1) PRIMARY KEY,
                             start_time TIMESTAMP,
-                            user_id INTEGER,
+                            user_id INTEGER NOT NULL,
                             level TEXT,
                             song_id TEXT,
                             artist_id TEXT,
@@ -70,16 +70,16 @@ songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplay(
 """)
 
 user_table_create = ("""CREATE TABLE IF NOT EXISTS users(
-                        user_id INTEGER,
-                        first_name TEXT,
-                        last_name TEXT,
+                        user_id INTEGER PRIMARY KEY,
+                        first_name TEXT NOT NULL,
+                        last_name TEXT NOT NULL,
                         gender CHAR(1),
                         level TEXT
                     )
 """)
 
 song_table_create = ("""CREATE TABLE IF NOT EXISTS song(
-                        song_id TEXT,
+                        song_id TEXT PRIMARY KEY,
                         title TEXT,
                         artist_id TEXT,
                         year INTEGER,
@@ -88,7 +88,7 @@ song_table_create = ("""CREATE TABLE IF NOT EXISTS song(
 """)
 
 artist_table_create = ("""CREATE TABLE IF NOT EXISTS artist(
-                          artist_id TEXT,
+                          artist_id TEXT PRIMARY KEY,
                           name TEXT,
                           location TEXT,
                           latitude NUMERIC,
@@ -97,7 +97,7 @@ artist_table_create = ("""CREATE TABLE IF NOT EXISTS artist(
 """)
 
 time_table_create = ("""CREATE TABLE IF NOT EXISTS time(
-                        start_time TIMESTAMP,
+                        start_time TIMESTAMP PRIMARY KEY,
                         hour INTEGER,
                         day INTEGER,
                         week INTEGER,
