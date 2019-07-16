@@ -4,4 +4,4 @@ Data Engineer Nano Degree - Udacity
 
 | ![Badge](projectBeginner.png) | ![Badge](projectPlanner.png) | ![Badge](projectInnovator.png)  | ![Badge](projectNinja.png) | 
 |:---:|:---:|:---:|:---:|
-| Project: Data Modeling with Postgres | Project: Data Modeling with Apache Cassandra | Project: Data Warehouse | Project: Data Lake |
+| Data Modeling with Postgres | Data Modeling with Apache Cassandra | Data Warehouse | Data Lake |
