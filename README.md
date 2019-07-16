@@ -2,6 +2,6 @@
 Data Engineer Nano Degree - Udacity
 
 
-| ![Badge](projectInnovator.png)  | ![Badge](projectNinja.png) |
-|:---:|:---:|
-| Project Innovator | Project Ninja |
+| ![Badge](projectBeginner.png) | ![Badge](projectPlanner.png) | ![Badge](projectInnovator.png)  | ![Badge](projectNinja.png) | 
+|:---:|:---:|:---:|:---:|
+| Project Beginner| Project Planner| Project Innovator | Project Ninja |
