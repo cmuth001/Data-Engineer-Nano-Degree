@@ -1,6 +1,6 @@
 # Data-Engineer-Nano-Degree
 Data Engineer Nano Degree - Udacity
 
-| ![Badge](project innovator.PNG)  |
+| ![Badge](projectInnovator.png)  |
 |:---:|
 | Data-Engineer-Nano-Degree Badge | 
